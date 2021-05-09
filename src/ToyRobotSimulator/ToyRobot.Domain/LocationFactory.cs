@@ -1,4 +1,4 @@
-﻿namespace ToyRobotSimulator
+﻿namespace ToyRobot.Domain
 {
     interface ILocationFactory
     {
@@ -20,7 +20,7 @@
 
         public Position Create(int x, int y, Facing facing)
         {
-            return new Position
+            return new()
             {
                 Coordinates = _coordinatesFactory.Create(x, y),
                 Facing = facing
@@ -29,7 +29,7 @@
 
         public Position Create(Position currentPosition, StepDirection direction)
         {
-            return new Position
+            return new()
             {
                 Coordinates = _coordinatesFactory.Create(currentPosition.Coordinates, direction),
                 Facing = currentPosition.Facing
@@ -40,7 +40,7 @@
         {
             Facing newFacing = _facingProvider.GetNext(currentPosition.Facing, direction);
 
-            return new Position
+            return new()
             {
                 Coordinates = currentPosition.Coordinates,
                 Facing = newFacing

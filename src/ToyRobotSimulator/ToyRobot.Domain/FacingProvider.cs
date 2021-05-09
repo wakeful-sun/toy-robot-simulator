@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ToyRobotSimulator
+namespace ToyRobot.Domain
 {
     interface IFacingProvider
     {
@@ -10,7 +10,7 @@ namespace ToyRobotSimulator
 
     class FacingProvider : IFacingProvider
     {
-        private readonly List<Facing> _orderedFacings = new() { Facing.North, Facing.West, Facing.South, Facing.East };
+        private readonly List<Facing> _orderedFacings = new() { Facing.North, Facing.East, Facing.South, Facing.West };
 
         public Facing GetNext(Facing currentFacing, RotationDirection rotationDirection)
         {
@@ -28,7 +28,7 @@ namespace ToyRobotSimulator
 
         private int GetNextFacingIndex(RotationDirection rotationDirection, int currentFacingIndex)
         {
-            int minIndex = 0;
+            const int minIndex = 0;
             int maxIndex = _orderedFacings.Count - 1;
 
             switch (rotationDirection)
