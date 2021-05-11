@@ -12,7 +12,7 @@ namespace ToyRobot.SimulatorConsole
     {
         static void Main(string[] args)
         {
-            MapDimensions mapDimensions = new() { X = 5, Y = 5 };
+            MapDimensions mapDimensions = new(5, 5);
             ICommandHandler<TextCommand, TextCommandResponse> textCommandHandler = CreatePipeline(mapDimensions);
 
             while (true)

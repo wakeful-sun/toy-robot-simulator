@@ -26,32 +26,21 @@
             int x = int.Parse(positionParts[0]);
             int y = int.Parse(positionParts[1]);
             Facing facing = _enumParser.Parse<Facing>(positionParts[2]);
+            Coordinates coordinates = _coordinatesFactory.Create(x, y);
 
-            return new()
-            {
-                Coordinates = _coordinatesFactory.Create(x, y),
-                Facing = facing
-            };
+            return new(coordinates, facing);
         }
 
         public Position Create(Position currentPosition, StepDirection direction)
         {
-            return new()
-            {
-                Coordinates = _coordinatesFactory.Create(currentPosition.Coordinates, direction),
-                Facing = currentPosition.Facing
-            };
+            Coordinates coordinates = _coordinatesFactory.Create(currentPosition.Coordinates, direction);
+            return new(coordinates, currentPosition.Facing);
         }
 
         public Position Create(Position currentPosition, RotationDirection direction)
         {
             Facing newFacing = _facingProvider.GetNext(currentPosition.Facing, direction);
-
-            return new()
-            {
-                Coordinates = currentPosition.Coordinates,
-                Facing = newFacing
-            };
+            return new(currentPosition.Coordinates, newFacing);
         }
     }
 

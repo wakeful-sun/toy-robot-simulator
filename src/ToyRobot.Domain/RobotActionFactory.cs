@@ -61,9 +61,7 @@ namespace ToyRobot.Domain
             };
     }
 
-    record RobotAction(RobotActionType ActionType, RotationDirection RotationDirection, Position NewPosition)
-    {
-    }
+    record RobotAction(RobotActionType ActionType, RotationDirection RotationDirection, Position NewPosition);
 
     enum RobotActionType
     {

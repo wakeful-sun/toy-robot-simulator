@@ -20,33 +20,12 @@
         {
             _validator.ValidateAndThrow(_dimensions, newPosition.Coordinates);
 
-            return new PositionUpdateResult
-            {
-                NewPosition = newPosition
-            };
+            return new PositionUpdateResult(newPosition);
         }
     }
 
-    record MapDimensions
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-    }
-
-    record PositionUpdateResult
-    {
-        public Position NewPosition { get; set; }
-    }
-
-    record Position
-    {
-        public Coordinates Coordinates { get; set; }
-        public Facing Facing { get; set; }
-    }
-
-    record Coordinates
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-    }
+    record MapDimensions(int X, int Y);
+    record PositionUpdateResult(Position NewPosition);
+    record Position(Coordinates Coordinates, Facing Facing);
+    record Coordinates(int X, int Y);
 }
