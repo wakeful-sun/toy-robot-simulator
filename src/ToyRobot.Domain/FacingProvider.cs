@@ -16,7 +16,7 @@ namespace ToyRobot.Domain
         {
             if (!_orderedFacings.Contains(currentFacing))
             {
-                throw new ArgumentException($"Facing {currentFacing} is not supported");
+                throw new ArgumentException($"Facing {currentFacing} is not supported.", nameof(currentFacing));
             }
 
             int currentFacingIndex = _orderedFacings.IndexOf(currentFacing);
@@ -38,7 +38,7 @@ namespace ToyRobot.Domain
                 case RotationDirection.Right:
                     return currentFacingIndex == maxIndex ? minIndex : currentFacingIndex + 1;
                 default:
-                    throw new ArgumentException($"Rotation direction {rotationDirection} is not supported");
+                    throw new ArgumentException($"Rotation direction {rotationDirection} is not supported.", nameof(rotationDirection));
             }
         }
     }
