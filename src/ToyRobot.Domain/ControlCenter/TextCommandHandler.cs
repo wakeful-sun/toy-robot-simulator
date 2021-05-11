@@ -19,10 +19,7 @@ namespace ToyRobot.Domain.ControlCenter
             RobotAction action = _actionFactory.Create(command.Input);
             MoveResult moveResult = ExecuteRobotAction(action);
 
-            return new TextCommandResponse
-            {
-                Output = moveResult.Message
-            };
+            return new TextCommandResponse(moveResult.Message);
         }
 
         private MoveResult ExecuteRobotAction(RobotAction action) =>
@@ -36,13 +33,7 @@ namespace ToyRobot.Domain.ControlCenter
             };
     }
 
-    class TextCommandResponse
-    {
-        public string Output { get; set; }
-    }
+    record TextCommandResponse(string Output) { }
 
-    class TextCommand
-    {
-        public string Input { get; set; }
-    }
+    record TextCommand(string Input) { }
 }

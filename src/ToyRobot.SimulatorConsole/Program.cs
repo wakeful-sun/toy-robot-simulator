@@ -23,7 +23,7 @@ namespace ToyRobot.SimulatorConsole
                     break;
                 }
 
-                TextCommandResponse response = textCommandHandler.Execute(new TextCommand { Input = input });
+                TextCommandResponse response = textCommandHandler.Execute(new TextCommand(input));
                 if (!string.IsNullOrWhiteSpace(response?.Output))
                 {
                     Console.WriteLine(response.Output);
