@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
-using ToyRobot.Domain.ControlCenter;
 
 namespace ToyRobot.Domain
 {
     interface IRobotActionFactory
     {
-        RobotAction Create(TextCommand textCommand);
+        RobotAction Create(string textCommand);
     }
 
     class RobotActionFactory : IRobotActionFactory
@@ -18,11 +17,11 @@ namespace ToyRobot.Domain
             _locationFactory = locationFactory;
         }
 
-        public RobotAction Create(TextCommand textCommand)
+        public RobotAction Create(string textCommand)
         {
             const char commandArgumentsSeparator = ' ';
 
-            string inputText = textCommand.Input.Trim();
+            string inputText = textCommand.Trim();
             string[] commandParts = inputText.Split(commandArgumentsSeparator);
             var command = new
             {
@@ -39,12 +38,7 @@ namespace ToyRobot.Domain
                 position = _locationFactory.Create(command.Arguments);
             }
 
-            return new RobotAction
-            {
-                ActionType = robotActionType,
-                RotationDirection = rotationDirection,
-                NewPosition = position
-            };
+            return new RobotAction(robotActionType, rotationDirection, position);
         }
 
         private RotationDirection ReadRotationDirection(string commandText) =>
@@ -67,16 +61,12 @@ namespace ToyRobot.Domain
             };
     }
 
-    record RobotAction
+    record RobotAction(RobotActionType ActionType, RotationDirection RotationDirection, Position NewPosition)
     {
-        public RobotActionType ActionType { get; set; }
-        public RotationDirection RotationDirection { get; set; }
-        public Position NewPosition { get; set; }
     }
 
     enum RobotActionType
     {
-        Undefined = 0,
         Place = 1,
         Move = 2,
         Turn = 3,

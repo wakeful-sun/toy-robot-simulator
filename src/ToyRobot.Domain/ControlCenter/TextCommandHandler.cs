@@ -16,7 +16,7 @@ namespace ToyRobot.Domain.ControlCenter
 
         public TextCommandResponse Execute(TextCommand command)
         {
-            RobotAction action = _actionFactory.Create(command);
+            RobotAction action = _actionFactory.Create(command.Input);
             MoveResult moveResult = ExecuteRobotAction(action);
 
             return new TextCommandResponse

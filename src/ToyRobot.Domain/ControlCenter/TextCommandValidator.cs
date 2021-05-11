@@ -7,7 +7,10 @@ namespace ToyRobot.Domain.ControlCenter
     {
         public void Validate(TextCommand command)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(command?.Input))
+            {
+                throw new ArgumentException($"Command input expected to have value.");
+            }
         }
     }
 }

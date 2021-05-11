@@ -61,12 +61,9 @@ namespace ToyRobot.Domain
         }
     }
 
-    record MoveResult
+    record MoveResult(bool Successful, string Message)
     {
-        public bool Successful { get; set; }
-        public string Message { get; set; }
-
-        public static MoveResult Success => new() { Successful = true };
-        public static MoveResult Report(Position position) => new() { Successful = true, Message = $"{position.Coordinates.X},{position.Coordinates.Y},{position.Facing}".ToUpperInvariant() };
+        public static MoveResult Success => new(true, null);
+        public static MoveResult Report(Position position) => new(true, $"{position.Coordinates.X},{position.Coordinates.Y},{position.Facing}".ToUpperInvariant());
     }
 }

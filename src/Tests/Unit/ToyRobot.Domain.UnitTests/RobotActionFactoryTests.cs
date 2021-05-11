@@ -1,7 +1,6 @@
 using AutoFixture;
 using NSubstitute;
 using NUnit.Framework;
-using ToyRobot.Domain.ControlCenter;
 
 namespace ToyRobot.Domain.UnitTests
 {
@@ -24,9 +23,9 @@ namespace ToyRobot.Domain.UnitTests
         [TestCase("LEFT", ExpectedResult = RobotActionType.Turn)]
         [TestCase("RIGHT", ExpectedResult = RobotActionType.Turn)]
         [TestCase("REPORT", ExpectedResult = RobotActionType.Report)]
-        public RobotActionType Should_ParseActionType(string commandText)
+        public RobotActionType ShouldParse_ActionType(string commandText)
         {
-            RobotAction robotAction = _sut.Create(new TextCommand { Input = commandText });
+            RobotAction robotAction = _sut.Create(commandText);
             return robotAction.ActionType;
         }
 
@@ -35,14 +34,14 @@ namespace ToyRobot.Domain.UnitTests
         [TestCase("PLACE 1,3,WEST", ExpectedResult = RotationDirection.Undefined)]
         [TestCase("MOVE", ExpectedResult = RotationDirection.Undefined)]
         [TestCase("REPORT", ExpectedResult = RotationDirection.Undefined)]
-        public RotationDirection Should_ParseRotationDirection(string commandText)
+        public RotationDirection ShouldParse_RotationDirection(string commandText)
         {
-            RobotAction robotAction = _sut.Create(new TextCommand { Input = commandText });
+            RobotAction robotAction = _sut.Create(commandText);
             return robotAction.RotationDirection;
         }
 
         [Test]
-        public void Should_CreatePositionUsingLocationFactory_ForPlaceCommandOnly()
+        public void ShouldCreate_PositionUsingLocationFactory_ForPlaceCommandOnly()
         {
             // arrange
             int x = _fixture.Create<int>();
@@ -51,7 +50,7 @@ namespace ToyRobot.Domain.UnitTests
             string expectedPlaceCommandArguments = $"{x},{y},{facing}";
 
             // act
-            _sut.Create(new TextCommand { Input = $"PLACE {expectedPlaceCommandArguments}" });
+            _sut.Create($"PLACE {expectedPlaceCommandArguments}");
 
             // assert
             _locationFactoryMock.Received(1).Create(expectedPlaceCommandArguments);
@@ -61,9 +60,9 @@ namespace ToyRobot.Domain.UnitTests
         [TestCase("LEFT")]
         [TestCase("RIGHT")]
         [TestCase("REPORT")]
-        public void ShouldNot_CreatePositionLocation(string commandText)
+        public void ShouldNotCreate_PositionLocation(string commandText)
         {
-            RobotAction robotAction = _sut.Create(new TextCommand { Input = commandText });
+            RobotAction robotAction = _sut.Create(commandText);
             Assert.That(robotAction.NewPosition, Is.Null);
         }
 
@@ -71,9 +70,9 @@ namespace ToyRobot.Domain.UnitTests
         [TestCase("LEFT")]
         [TestCase("RIGHT")]
         [TestCase("REPORT")]
-        public void ShouldNot_CallPositionLocationFactory(string commandText)
+        public void ShouldNotCall_PositionLocationFactory(string commandText)
         {
-            _sut.Create(new TextCommand { Input = commandText });
+            _sut.Create(commandText);
             _locationFactoryMock.DidNotReceive().Create(Arg.Any<string>());
         }
     }
