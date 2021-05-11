@@ -10,6 +10,15 @@ namespace ToyRobot.Domain
 
     class RobotActionFactory : IRobotActionFactory
     {
+        private readonly ILocationFactory _locationFactory;
+        private readonly IEnumParser _enumParser;
+
+        public RobotActionFactory(ILocationFactory locationFactory, IEnumParser enumParser)
+        {
+            _locationFactory = locationFactory;
+            _enumParser = enumParser;
+        }
+
         public RobotAction Create(TextCommand textCommand)
         {
             throw new NotImplementedException();

@@ -34,8 +34,9 @@ namespace ToyRobot.SimulatorConsole
         private static ICommandHandler<TextCommand, TextCommandResponse> CreatePipeline(MapDimensions mapDimensions)
         {
             ICoordinatesValidator coordinatesValidator = new CoordinatesValidator();
-            IRobot robot = new Domain.ToyRobot(new Map(mapDimensions, coordinatesValidator), new LocationFactory(new CoordinatesFactory(), new FacingProvider()));
-            TextCommandHandler textCommandHandler = new(new RobotActionFactory(), robot);
+            ILocationFactory locationFactory = new LocationFactory(new CoordinatesFactory(), new FacingProvider());
+            IRobot robot = new Domain.ToyRobot(new Map(mapDimensions, coordinatesValidator), locationFactory);
+            TextCommandHandler textCommandHandler = new(new RobotActionFactory(locationFactory, new EnumParser()), robot);
             CommandHandlerValidationDecorator<TextCommand, TextCommandResponse> textCommandHandlerValidationDecorator = new(textCommandHandler, new TextCommandValidator());
             CommandHandlerLoggingDecorator<TextCommand, TextCommandResponse> textCommandHandlerLoggingDecorator = new(textCommandHandlerValidationDecorator, new Logger<ICommandHandler<TextCommand, TextCommandResponse>>(new NullLoggerFactory()));
             CommandHandlerErrorHandlingDecorator<TextCommand, TextCommandResponse> textCommandErrorHandlingDecorator = new(textCommandHandlerLoggingDecorator);

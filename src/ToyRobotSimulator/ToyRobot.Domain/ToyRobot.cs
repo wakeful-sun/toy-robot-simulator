@@ -32,7 +32,7 @@ namespace ToyRobot.Domain
 
         public MoveResult Move()
         {
-            ValidateState();
+            ValidateCurrentState();
             Position newPosition = _locationFactory.Create(_currentPosition, StepDirection.Forward);
             MoveResult moveResult = Place(newPosition);
             return moveResult;
@@ -40,7 +40,7 @@ namespace ToyRobot.Domain
 
         public MoveResult Turn(RotationDirection direction)
         {
-            ValidateState();
+            ValidateCurrentState();
             Position newPosition = _locationFactory.Create(_currentPosition, direction);
             MoveResult moveResult = Place(newPosition);
             return moveResult;
@@ -48,11 +48,11 @@ namespace ToyRobot.Domain
 
         public MoveResult Report()
         {
-            ValidateState();
+            ValidateCurrentState();
             return MoveResult.Report(_currentPosition);
         }
 
-        private void ValidateState()
+        private void ValidateCurrentState()
         {
             if (_currentPosition == null)
             {
