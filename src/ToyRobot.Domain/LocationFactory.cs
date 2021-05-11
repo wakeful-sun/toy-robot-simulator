@@ -2,7 +2,7 @@
 {
     interface ILocationFactory
     {
-        Position Create(int x, int y, Facing facing);
+        Position Create(string positionText, char positionPartsDelimiter = ',');
         Position Create(Position currentPosition, StepDirection direction);
         Position Create(Position currentPosition, RotationDirection direction);
     }
@@ -11,15 +11,22 @@
     {
         private readonly ICoordinatesFactory _coordinatesFactory;
         private readonly IFacingProvider _facingProvider;
+        private readonly IEnumParser _enumParser;
 
-        public LocationFactory(ICoordinatesFactory coordinatesFactory, IFacingProvider facingProvider)
+        public LocationFactory(ICoordinatesFactory coordinatesFactory, IFacingProvider facingProvider, IEnumParser enumParser)
         {
             _coordinatesFactory = coordinatesFactory;
             _facingProvider = facingProvider;
+            _enumParser = enumParser;
         }
 
-        public Position Create(int x, int y, Facing facing)
+        public Position Create(string positionText, char positionPartsDelimiter = ',')
         {
+            string[] positionParts = positionText.Split(positionPartsDelimiter);
+            int x = int.Parse(positionParts[0]);
+            int y = int.Parse(positionParts[1]);
+            Facing facing = _enumParser.Parse<Facing>(positionParts[2]);
+
             return new()
             {
                 Coordinates = _coordinatesFactory.Create(x, y),

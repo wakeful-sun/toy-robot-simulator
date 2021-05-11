@@ -11,17 +11,15 @@ namespace ToyRobot.Domain.UnitTests
 
         private RobotActionFactory _sut;
         private ILocationFactory _locationFactoryMock;
-        private IEnumParser _enumParser;
 
         [SetUp]
         public void BeforeEachTest()
         {
             _locationFactoryMock = Substitute.For<ILocationFactory>();
-            _enumParser = Substitute.For<IEnumParser>();
-            _sut = new RobotActionFactory(_locationFactoryMock, _enumParser);
+            _sut = new RobotActionFactory(_locationFactoryMock);
         }
 
-        [TestCase("PLACE", ExpectedResult = RobotActionType.Place)]
+        [TestCase("PLACE 0,0,NORTH", ExpectedResult = RobotActionType.Place)]
         [TestCase("MOVE", ExpectedResult = RobotActionType.Move)]
         [TestCase("LEFT", ExpectedResult = RobotActionType.Turn)]
         [TestCase("RIGHT", ExpectedResult = RobotActionType.Turn)]
@@ -34,7 +32,7 @@ namespace ToyRobot.Domain.UnitTests
 
         [TestCase("LEFT", ExpectedResult = RotationDirection.Left)]
         [TestCase("RIGHT", ExpectedResult = RotationDirection.Right)]
-        [TestCase("PLACE", ExpectedResult = RotationDirection.Undefined)]
+        [TestCase("PLACE 1,3,WEST", ExpectedResult = RotationDirection.Undefined)]
         [TestCase("MOVE", ExpectedResult = RotationDirection.Undefined)]
         [TestCase("REPORT", ExpectedResult = RotationDirection.Undefined)]
         public RotationDirection Should_ParseRotationDirection(string commandText)
@@ -44,30 +42,19 @@ namespace ToyRobot.Domain.UnitTests
         }
 
         [Test]
-        public void Should_ParseFacingUsingEnumParser_ForPlaceCommandOnly()
-        {
-            string expectedFacing = _fixture.Create<Facing>().ToString().ToUpperInvariant();
-
-            _sut.Create(new TextCommand { Input = $"PLACE 0,0,{expectedFacing}" });
-
-            _enumParser.Received(1).Parse<Facing>(expectedFacing);
-        }
-
-        [Test]
         public void Should_CreatePositionUsingLocationFactory_ForPlaceCommandOnly()
         {
             // arrange
-            int expectedX = _fixture.Create<int>();
-            int expectedY = _fixture.Create<int>();
-            Facing expectedFacing = _fixture.Create<Facing>();
-            string expectedFacingText = expectedFacing.ToString().ToUpperInvariant();
-            _enumParser.Parse<Facing>(expectedFacingText).Returns(expectedFacing);
+            int x = _fixture.Create<int>();
+            int y = _fixture.Create<int>();
+            Facing facing = _fixture.Create<Facing>();
+            string expectedPlaceCommandArguments = $"{x},{y},{facing}";
 
             // act
-            _sut.Create(new TextCommand { Input = $"PLACE {expectedX},{expectedY},{expectedFacingText}" });
+            _sut.Create(new TextCommand { Input = $"PLACE {expectedPlaceCommandArguments}" });
 
             // assert
-            _locationFactoryMock.Received(1).Create(expectedX, expectedY, expectedFacing);
+            _locationFactoryMock.Received(1).Create(expectedPlaceCommandArguments);
         }
 
         [TestCase("MOVE")]
@@ -87,7 +74,7 @@ namespace ToyRobot.Domain.UnitTests
         public void ShouldNot_CallPositionLocationFactory(string commandText)
         {
             _sut.Create(new TextCommand { Input = commandText });
-            _locationFactoryMock.DidNotReceive().Create(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<Facing>());
+            _locationFactoryMock.DidNotReceive().Create(Arg.Any<string>());
         }
     }
 }
