@@ -46,7 +46,6 @@
 
     enum StepDirection
     {
-        Undefined = 0,
         Forward = 1
     }
 
