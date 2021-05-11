@@ -27,5 +27,14 @@
     record MapDimensions(int X, int Y);
     record PositionUpdateResult(Position NewPosition);
     record Position(Coordinates Coordinates, Facing Facing);
-    record Coordinates(int X, int Y);
+
+    record Coordinates(int X, int Y)
+    {
+        public static Coordinates operator +(Coordinates a, Coordinates b)
+        {
+            int newX = a.X + b.X;
+            int newY = a.Y + b.Y;
+            return new(newX, newY);
+        }
+    };
 }

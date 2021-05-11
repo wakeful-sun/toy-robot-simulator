@@ -3,8 +3,8 @@
     interface ILocationFactory
     {
         Position Create(string positionText, char positionPartsDelimiter = ',');
-        Position Create(Position currentPosition, StepDirection direction);
-        Position Create(Position currentPosition, RotationDirection direction);
+        Position Create(Position currentPosition, StepDirection stepDirection);
+        Position Create(Position currentPosition, RotationDirection rotationDirection);
     }
 
     class LocationFactory : ILocationFactory
@@ -31,15 +31,15 @@
             return new(coordinates, facing);
         }
 
-        public Position Create(Position currentPosition, StepDirection direction)
+        public Position Create(Position currentPosition, StepDirection stepDirection)
         {
-            Coordinates coordinates = _coordinatesFactory.Create(currentPosition.Coordinates, direction);
+            Coordinates coordinates = _coordinatesFactory.Create(currentPosition, stepDirection);
             return new(coordinates, currentPosition.Facing);
         }
 
-        public Position Create(Position currentPosition, RotationDirection direction)
+        public Position Create(Position currentPosition, RotationDirection rotationDirection)
         {
-            Facing newFacing = _facingProvider.GetNext(currentPosition.Facing, direction);
+            Facing newFacing = _facingProvider.GetNext(currentPosition.Facing, rotationDirection);
             return new(currentPosition.Coordinates, newFacing);
         }
     }
