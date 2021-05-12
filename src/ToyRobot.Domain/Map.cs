@@ -7,24 +7,23 @@
 
     class Map : IMap
     {
-        private readonly MapDimensions _dimensions;
+        private readonly IApplicationSettings _applicationSettings;
         private readonly ICoordinatesValidator _validator;
 
-        public Map(MapDimensions dimensions, ICoordinatesValidator validator)
+        public Map(IApplicationSettings applicationSettings, ICoordinatesValidator validator)
         {
-            _dimensions = dimensions;
+            _applicationSettings = applicationSettings;
             _validator = validator;
         }
 
         public PositionUpdateResult Move(Position newPosition)
         {
-            _validator.ValidateAndThrow(_dimensions, newPosition.Coordinates);
+            _validator.ValidateAndThrow(_applicationSettings.MapDimensions, newPosition.Coordinates);
 
             return new PositionUpdateResult(newPosition);
         }
     }
 
-    record MapDimensions(int X, int Y);
     record PositionUpdateResult(Position NewPosition);
     record Position(Coordinates Coordinates, Facing Facing);
 
@@ -36,5 +35,5 @@
             int newY = a.Y + b.Y;
             return new(newX, newY);
         }
-    };
+    }
 }

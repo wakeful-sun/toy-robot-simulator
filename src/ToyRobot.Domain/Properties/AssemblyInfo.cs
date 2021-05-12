@@ -16,6 +16,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM.
 
 [assembly: Guid("7a2c5eca-493f-4bda-9f0b-71a2e839791a")]
-[assembly: InternalsVisibleTo("ToyRobot.SimulatorConsole")]
 [assembly: InternalsVisibleTo("ToyRobot.Domain.UnitTests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

@@ -33,6 +33,6 @@ namespace ToyRobot.Domain.ControlCenter
             };
     }
 
-    record TextCommandResponse(string Output);
-    record TextCommand(string Input);
+    public record TextCommandResponse(string Output);
+    public record TextCommand(string Input);
 }

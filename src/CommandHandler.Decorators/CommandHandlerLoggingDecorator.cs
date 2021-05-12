@@ -28,14 +28,14 @@ namespace CommandHandler.Decorators
                 TResponse response = _commandHandler.Execute(command);
 
                 stopwatch.Stop();
-                _logger.Log(LogLevel.Information, $"END: command handler {_commandHandlerName}, elapsed {stopwatch.ElapsedMilliseconds:#,#}ms", response);
+                _logger.Log(LogLevel.Information, $"END: command handler {_commandHandlerName}. Elapsed: {stopwatch.ElapsedMilliseconds:#,#}ms", response);
 
                 return response;
             }
             catch (Exception e)
             {
                 stopwatch.Stop();
-                _logger.Log(LogLevel.Error, e, $"END: command handler {_commandHandler}, elapsed {stopwatch.ElapsedMilliseconds:#,#}ms, exception {e.GetType().Name}: {e.Message}");
+                _logger.Log(LogLevel.Warning, $"END: processing command of {_commandHandlerName} command handle has failed. Exception: {e.GetType().Name}: {e.Message}. Elapsed: {stopwatch.ElapsedMilliseconds:#,#}ms");
                 throw;
             }
         }
